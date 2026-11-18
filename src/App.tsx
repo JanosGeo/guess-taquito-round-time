@@ -11,6 +11,7 @@ import {
   emptyAssignments,
   grade,
   prepareRound,
+  revealAnswers,
   type Assignments,
   type CountryChip,
   type Round,
@@ -82,6 +83,7 @@ function App() {
     emptyAssignments(round.slots),
   )
   const [results, setResults] = useState<Record<string, boolean> | null>(null)
+  const [revealed, setRevealed] = useState(false)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
 
@@ -138,11 +140,12 @@ function App() {
   const correctCount = results
     ? Object.values(results).filter((value) => value).length
     : 0
-  const won =
+  const solved =
     round.slots.length > 0 &&
     results != null &&
     round.slots.every((slot) => results[slot.id] === true)
-  const canSubmit = filled && !won && !dataError
+  const won = solved && !revealed
+  const canSubmit = filled && !won && !revealed && !dataError
   const draggingChip = draggingId ? chipById.get(draggingId) : undefined
 
   function onChipPointerDown(
@@ -207,6 +210,20 @@ function App() {
     setResults(graded)
   }
 
+  function onGiveUp() {
+    if (won || revealed) return
+    dragToken.current += 1
+    setDraggingId(null)
+    setOverId(null)
+    const solvedAssignments = revealAnswers(round)
+    const graded = grade(round.slots, solvedAssignments, round.chips)
+    assignmentsRef.current = solvedAssignments
+    resultsRef.current = graded
+    setAssignments(solvedAssignments)
+    setResults(graded)
+    setRevealed(true)
+  }
+
   function onReplay() {
     dragToken.current += 1
     setDraggingId(null)
@@ -218,9 +235,12 @@ function App() {
     setRound(next)
     setAssignments(cleared)
     setResults(null)
+    setRevealed(false)
   }
 
-  const status = won
+  const status = revealed
+    ? 'Answers revealed.'
+    : won
     ? `All ${round.slots.length} pairs are correct.`
     : results
       ? `${correctCount} / ${round.slots.length} correct`
@@ -259,6 +279,14 @@ function App() {
           </button>
           <button type="button" className="secondary" onClick={onReplay}>
             Play again
+          </button>
+          <button
+            type="button"
+            className="secondary"
+            onClick={onGiveUp}
+            disabled={won || revealed}
+          >
+            I give up
           </button>
           <p className={won ? 'status done' : 'status'} aria-live="polite">
             {status}
@@ -311,8 +339,9 @@ function App() {
                     ) : (
                       <span className="placeholder">Drop country</span>
                     )}
-                    {mark === true && <span className="mark ok">Correct</span>}
-                    {mark === false && <span className="mark bad">Incorrect</span>}
+                    {revealed && <span className="mark ok">Answer</span>}
+                    {!revealed && mark === true && <span className="mark ok">Correct</span>}
+                    {!revealed && mark === false && <span className="mark bad">Incorrect</span>}
                   </div>
                 </li>
               )

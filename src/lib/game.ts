@@ -74,6 +74,20 @@ export function prepareRound(source: readonly RoundPair[]): Round {
   return { slots, chips }
 }
 
+export function revealAnswers(round: Round): Assignments {
+  const assignments = emptyAssignments(round.slots)
+  const used = new Set<string>()
+  for (const slot of round.slots) {
+    const chip = round.chips.find(
+      (candidate) => candidate.country === slot.country && !used.has(candidate.id),
+    )
+    if (!chip) continue
+    used.add(chip.id)
+    assignments[slot.id] = chip.id
+  }
+  return assignments
+}
+
 export function emptyAssignments(slots: readonly TimeSlot[]): Assignments {
   const assignments: Assignments = {}
   for (const slot of slots) assignments[slot.id] = null

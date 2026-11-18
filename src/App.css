@@ -70,9 +70,14 @@ body {
   background: var(--teal);
 }
 
-.primary:disabled {
+.primary:disabled,
+.secondary:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.secondary:hover:not(:disabled) {
+  background: rgba(244, 239, 230, 0.08);
 }
 
 .secondary {
@@ -81,9 +86,6 @@ body {
   color: var(--ink);
 }
 
-.secondary:hover {
-  background: rgba(244, 239, 230, 0.08);
-}
 
 .primary:focus-visible,
 .secondary:focus-visible,
