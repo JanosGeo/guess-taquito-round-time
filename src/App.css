@@ -26,12 +26,12 @@ body {
 .app {
   width: min(920px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 36px 0 64px;
+  padding: 16px 0 20px;
 }
 
 .intro h1 {
   margin: 0;
-  font-size: 2.4rem;
+  font-size: 1.65rem;
   font-weight: 650;
   letter-spacing: -0.04em;
   line-height: 1.05;
@@ -40,7 +40,7 @@ body {
 .intro p,
 .sheet-head p,
 .empty {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   color: var(--muted);
 }
 
@@ -48,21 +48,21 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 12px;
-  margin-top: 22px;
+  gap: 8px 10px;
+  margin-top: 12px;
 }
 
 .quiz-switch {
   display: flex;
   justify-content: flex-start;
-  margin-top: 28px;
+  margin-top: 12px;
 }
 
 .primary,
 .secondary {
-  min-height: 44px;
+  min-height: 36px;
   border-radius: 999px;
-  padding: 0 18px;
+  padding: 0 14px;
   cursor: pointer;
 }
 
@@ -114,17 +114,17 @@ body {
 .board {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
-  gap: 18px;
+  gap: 14px;
   align-items: start;
-  margin-top: 26px;
+  margin-top: 14px;
 }
 
 .sheet,
 .bank {
   background: var(--sheet);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 10px 12px;
 }
 
 .sheet-head,
@@ -143,11 +143,11 @@ body {
 
 .rows {
   list-style: none;
-  margin: 14px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .row {
@@ -160,19 +160,19 @@ body {
 .time {
   font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
   font-variant-numeric: tabular-nums;
-  font-size: 1.15rem;
+  font-size: 1rem;
   text-align: right;
 }
 
 .slot {
-  min-height: 52px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 6px;
+  padding: 3px;
   border: 1.5px dashed #5c554c;
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--slot);
 }
 
@@ -251,8 +251,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 4px;
+  margin-top: 8px;
 }
 
 .bank-row {
@@ -270,8 +270,8 @@ body {
 
 .assign {
   flex: none;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--chip-line);
   border-radius: 999px;
   background: transparent;
@@ -293,7 +293,7 @@ body {
   background: var(--chip);
   color: var(--ink);
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 4px 12px;
   cursor: grab;
   user-select: none;
   touch-action: none;
@@ -337,7 +337,7 @@ body {
   }
 
   .intro h1 {
-    font-size: 2rem;
+    font-size: 1.45rem;
   }
 
   .board {
