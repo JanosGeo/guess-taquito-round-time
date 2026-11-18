@@ -5,7 +5,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
-import { pairs } from './data/pairs.ts'
+import { easyPairs, pairs, type RoundPair } from './data/pairs.ts'
 import {
   describePairs,
   emptyAssignments,
@@ -19,6 +19,12 @@ import {
 import './App.css'
 
 const BANK = 'bank'
+
+type QuizMode = 'full' | 'easy'
+
+function pairsFor(mode: QuizMode): readonly RoundPair[] {
+  return mode === 'easy' ? easyPairs(pairs) : pairs
+}
 
 function dropTargetAt(
   x: number,
@@ -84,6 +90,7 @@ function App() {
   )
   const [results, setResults] = useState<Record<string, boolean> | null>(null)
   const [revealed, setRevealed] = useState(false)
+  const [mode, setMode] = useState<QuizMode>('full')
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [overId, setOverId] = useState<string | null>(null)
 
@@ -230,18 +237,30 @@ function App() {
     setRevealed(true)
   }
 
-  function onReplay() {
+  function begin(nextMode: QuizMode) {
     dragToken.current += 1
     setDraggingId(null)
     setOverId(null)
-    const next = prepareRound(pairs)
+    const next = dataError
+      ? { slots: [], chips: [] }
+      : prepareRound(pairsFor(nextMode))
     const cleared = emptyAssignments(next.slots)
     assignmentsRef.current = cleared
     resultsRef.current = null
+    setMode(nextMode)
     setRound(next)
     setAssignments(cleared)
     setResults(null)
     setRevealed(false)
+  }
+
+  function onReplay() {
+    begin(mode)
+  }
+
+  function onMode(nextMode: QuizMode) {
+    if (nextMode === mode) return
+    begin(nextMode)
   }
 
   const status = revealed
@@ -386,6 +405,16 @@ function App() {
             </div>
           )}
         </aside>
+      </div>
+
+      <div className="quiz-switch">
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => onMode(mode === 'full' ? 'easy' : 'full')}
+        >
+          {mode === 'full' ? 'Too hard? Try the easier quiz' : 'Full quiz'}
+        </button>
       </div>
 
       {draggingChip && (

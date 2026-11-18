@@ -52,6 +52,12 @@ body {
   margin-top: 22px;
 }
 
+.quiz-switch {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 28px;
+}
+
 .primary,
 .secondary {
   min-height: 44px;
