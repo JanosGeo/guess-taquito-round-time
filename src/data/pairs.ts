@@ -27,4 +27,5 @@ export const pairs: RoundPair[] = [
   { time: "35m17s", country: "France" },
 
   { time: "4m47s", country: "Ireland" },
+  { time: "18m56s", country: "Argentina" },
 ];

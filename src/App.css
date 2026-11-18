@@ -90,7 +90,8 @@ body {
 .primary:focus-visible,
 .secondary:focus-visible,
 .chip:focus-visible,
-.remove:focus-visible {
+.remove:focus-visible,
+.assign:focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 3px;
 }
@@ -248,9 +249,37 @@ body {
   margin-top: 14px;
 }
 
-.bank-chips .chip {
-  width: 100%;
+.bank-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bank-row .chip {
+  flex: 1;
+  width: auto;
+  min-width: 0;
   text-align: left;
+}
+
+.assign {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--chip-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.assign:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(61, 204, 192, 0.12);
 }
 
 .chip {

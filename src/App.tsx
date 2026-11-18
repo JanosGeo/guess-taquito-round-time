@@ -203,6 +203,12 @@ function App() {
     window.addEventListener('pointercancel', end)
   }
 
+  function placeInNextSlot(chipId: string) {
+    const nextSlot = round.slots.find((slot) => !assignmentsRef.current[slot.id])
+    if (!nextSlot) return
+    placeChip(chipId, nextSlot.id)
+  }
+
   function onSubmit() {
     if (!filled || won) return
     const graded = grade(round.slots, assignmentsRef.current, round.chips)
@@ -360,13 +366,22 @@ function App() {
           ) : (
             <div className="bank-chips">
               {bank.map((chip) => (
-                <CountryChip
-                  key={chip.id}
-                  chip={chip}
-                  locked={false}
-                  dimmed={draggingId === chip.id}
-                  onPointerDown={onChipPointerDown}
-                />
+                <div key={chip.id} className="bank-row">
+                  <button
+                    type="button"
+                    className="assign"
+                    aria-label={`Place ${chip.country} in the next open time`}
+                    onClick={() => placeInNextSlot(chip.id)}
+                  >
+                    ←
+                  </button>
+                  <CountryChip
+                    chip={chip}
+                    locked={false}
+                    dimmed={draggingId === chip.id}
+                    onPointerDown={onChipPointerDown}
+                  />
+                </div>
               ))}
             </div>
           )}
