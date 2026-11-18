@@ -341,7 +341,7 @@ function App() {
               return (
                 <li key={slot.id} className={rowClass} data-drop={slot.id}>
                   <span className="time">{slot.time}</span>
-                  <div className="slot">
+                  <div className={chip ? 'slot' : 'slot empty'}>
                     {chip ? (
                       <div className="placed">
                         <CountryChip
@@ -361,9 +361,7 @@ function App() {
                           </button>
                         )}
                       </div>
-                    ) : (
-                      <span className="placeholder">Drop country</span>
-                    )}
+                    ) : null}
                     {revealed && <span className="mark ok">Answer</span>}
                     {!revealed && mark === true && <span className="mark ok">Correct</span>}
                     {!revealed && mark === false && <span className="mark bad">Incorrect</span>}

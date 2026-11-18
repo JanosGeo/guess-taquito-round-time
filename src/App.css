@@ -171,14 +171,20 @@ body {
   justify-content: space-between;
   gap: 8px;
   padding: 3px;
-  border: 1.5px dashed #5c554c;
+  border: 1.5px solid #3a342e;
   border-radius: 10px;
   background: var(--slot);
 }
 
-.placeholder {
-  color: var(--muted);
-  padding-left: 8px;
+.slot.empty {
+  border-style: dashed;
+  border-color: #8a8073;
+  background: transparent;
+}
+
+.app.dragging .slot.empty {
+  border-color: var(--teal);
+  background: rgba(61, 204, 192, 0.08);
 }
 
 .placed {
@@ -225,6 +231,7 @@ body {
   background: var(--bad-bg);
 }
 
+.app.dragging .row.over .slot,
 .row.over .slot {
   border: 1.5px solid var(--teal);
   background: var(--over);
