@@ -31,7 +31,8 @@ export const pairs: RoundPair[] = [
   { time: "4m47s", country: "Ireland", easy: true },
   { time: "18m56s", country: "Argentina", easy: false },
   { time: "11m4s", country: "Paraguay", easy: true },
-  { time: "7m24s", country: "Oman", easy: true },
+  { time: "7m24s", country: "Oman", easy: false },
+  { time: "9m33s", country: "Denmark", easy: true },
 ];
 
 export function easyPairs(source: readonly RoundPair[] = pairs): RoundPair[] {
