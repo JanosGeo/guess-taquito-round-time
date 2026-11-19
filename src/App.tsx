@@ -143,16 +143,18 @@ function App() {
     Object.values(assignments).filter((id): id is string => id != null),
   )
   const bank = round.chips.filter((chip) => !assignedIds.has(chip.id))
-  const filled = round.slots.every((slot) => assignments[slot.id])
   const correctCount = results
     ? Object.values(results).filter((value) => value).length
+    : 0
+  const incorrectCount = results
+    ? round.slots.filter((slot) => results[slot.id] === false && assignments[slot.id]).length
     : 0
   const solved =
     round.slots.length > 0 &&
     results != null &&
     round.slots.every((slot) => results[slot.id] === true)
   const won = solved && !revealed
-  const canSubmit = filled && !won && !revealed && !dataError
+  const canSubmit = !won && !revealed && !dataError
   const draggingChip = draggingId ? chipById.get(draggingId) : undefined
 
   function onChipPointerDown(
@@ -217,9 +219,28 @@ function App() {
   }
 
   function onSubmit() {
-    if (!filled || won) return
+    if (won || revealed) return
     const graded = grade(round.slots, assignmentsRef.current, round.chips)
     resultsRef.current = graded
+    setResults(graded)
+  }
+
+  function onClearIncorrect() {
+    const current = resultsRef.current
+    if (!current) return
+    const next: Assignments = { ...assignmentsRef.current }
+    const graded = { ...current }
+    let removed = false
+    for (const slot of round.slots) {
+      if (current[slot.id] !== false || !next[slot.id]) continue
+      next[slot.id] = null
+      delete graded[slot.id]
+      removed = true
+    }
+    if (!removed) return
+    assignmentsRef.current = next
+    resultsRef.current = graded
+    setAssignments(next)
     setResults(graded)
   }
 
@@ -269,9 +290,7 @@ function App() {
     ? `All ${round.slots.length} pairs are correct.`
     : results
       ? `${correctCount} / ${round.slots.length} correct`
-      : filled
-        ? 'Submit to check your pairs.'
-        : 'Place every country, then submit.'
+      : 'Submit to check your pairs.'
 
   if (dataError) {
     return (
@@ -301,6 +320,14 @@ function App() {
             disabled={!canSubmit}
           >
             Submit
+          </button>
+          <button
+            type="button"
+            className="secondary"
+            onClick={onClearIncorrect}
+            disabled={incorrectCount === 0}
+          >
+            Remove incorrect
           </button>
           <button type="button" className="secondary" onClick={onReplay}>
             Play again

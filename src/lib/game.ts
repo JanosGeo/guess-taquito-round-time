@@ -103,7 +103,8 @@ export function grade(
   const results: Record<string, boolean> = {}
   for (const slot of slots) {
     const chipId = assignments[slot.id]
-    results[slot.id] = chipId != null && countries.get(chipId) === slot.country
+    if (chipId == null) continue
+    results[slot.id] = countries.get(chipId) === slot.country
   }
   return results
 }
